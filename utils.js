@@ -88,6 +88,7 @@ export async function getGlobalCommands(appId) {
   }
 }
 
+// API endpoint to get daily leetcode question and return JSON
 export async function getDailyLeetCode() {
   const url = "http://localhost:3000/daily";
   const res = await fetch(url, {
@@ -98,6 +99,7 @@ export async function getDailyLeetCode() {
   return await res.json();
 }
 
+// turn leetcode json into an embed for the discord message
 export function leetCodeInfoToEmbed(leetCodeJson) {
   const dividedQuestion = leetCodeQuestionDivide(leetCodeJson.question);
   const descriptionText = dividedQuestion[0];
@@ -148,6 +150,7 @@ export function leetCodeInfoToEmbed(leetCodeJson) {
   return embed; 
 }
 
+// Separate the html from the leetcode JSON.question into an array of strings for later use in the embed
 export function leetCodeQuestionDivide(question) {
   let parts = question.split("<p>&nbsp;</p>");
   let partsText = []

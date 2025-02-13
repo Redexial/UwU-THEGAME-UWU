@@ -11,12 +11,14 @@ import {
 import { getRandomEmoji, DiscordRequest, leetCodeInfoToEmbed, getDailyLeetCode } from "./utils.js";
 import { getShuffledOptions, getResult } from "./game.js";
 
+//TODO: delete functionality from the example discord RPS Bot
 // Create an express app
 const app = express();
 // Get port, or default to 3000
 const PORT = process.env.PORT || 666;
 // To keep track of our active games
 const activeGames = {};
+//get the daily leetcode question from the leetcode api
 let myjson = await getDailyLeetCode();
 
 /**
@@ -55,7 +57,9 @@ app.post(
           },
         });
       }
-
+      
+      // Create and embed with the leetcode daily question
+      // TODO: make this command be called "daily" instead of as a slash command
       if (name === "embed") {
         // Send a message into the channel where command was triggered from
         return res.send({
