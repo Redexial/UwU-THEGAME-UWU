@@ -1,6 +1,7 @@
 import "dotenv/config";
 import jsdom from "jsdom";
 import jquery from "jquery";
+import e from "express";
 
 const { JSDOM } = jsdom;
 const { window } = new JSDOM();
@@ -103,8 +104,7 @@ export async function getDailyLeetCode() {
 export function leetCodeInfoToEmbed(leetCodeJson) {
   const dividedQuestion = leetCodeQuestionDivide(leetCodeJson.question);
   const descriptionText = dividedQuestion[0];
-  const examples = dividedQuestion[1].split("\n\n\n");
-  const constraints = dividedQuestion[2];
+  const examples = leetCodeFieldsEmbed(dividedQuestion);
   let embed = {
     type: "article",
     url: leetCodeJson.questionLink,
@@ -128,23 +128,7 @@ export function leetCodeInfoToEmbed(leetCodeJson) {
       //placeholder_version: 1,
       //flags: 0,
     },
-    fields: [
-      {
-        name: "Example 1",
-        value: `${examples[0].split("\n\n")[1]}`,
-        inline: false,
-      },
-      {
-        name: "Example 2",
-        value: `${examples[1].split("\n\n")[1]}`,
-        inline: false,
-      },
-      {
-        name: "Constraints",
-        value: `${constraints.split("\n\n")[1]}`,
-        inline: false,
-      },
-    ],
+    fields: examples,
   }
   
   return embed; 
@@ -159,4 +143,21 @@ export function leetCodeQuestionDivide(question) {
   }
 
   return partsText;
+}
+
+export function leetCodeFieldsEmbed(dividedQuestion){
+  let examples = dividedQuestion[1].split("\n\n\n");
+  examples = examples.map((example) => {
+    return {
+      name: example.split("\n\n")[0],
+      //taking everything after the first element so that example 1:\n\n is skipped and everything is joined back together
+      value: example.split("\n\n").slice(1).join("\n\n"),
+    };
+  });
+  examples.push({
+    name: "Constraints",
+    //taking everything after the first element so that constraints:\n\n is skipped
+    value: dividedQuestion[2].split("\n\n").slice(1).join("\n\n"),
+  });
+  return examples
 }

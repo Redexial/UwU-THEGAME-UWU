@@ -14,7 +14,7 @@ import { getShuffledOptions, getResult } from "./game.js";
 //TODO: delete functionality from the example discord RPS Bot
 // Create an express app
 const app = express();
-// Get port, or default to 3000
+// Get port, or default to 666
 const PORT = process.env.PORT || 666;
 // To keep track of our active games
 const activeGames = {};
